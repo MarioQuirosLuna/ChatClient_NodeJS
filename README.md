@@ -57,6 +57,12 @@
    - body-parser
    - socket.io
 
+   File .env configuration
+
+   ```
+   MONGO_URL = "mongodb url"
+   ```
+
    ### 👉 Installation.
    
    ```
