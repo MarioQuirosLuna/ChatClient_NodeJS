@@ -20,7 +20,8 @@
    ### 🏆 Specifications.
    
    - Chat client with socket.io
-
+   - Test with jasmine
+   
    ### ⭐ Languages.
    
   ![HTML](https://custom-icon-badges.herokuapp.com/badge/-HTML-%23E34F26?style=flat&logo=html5&logoColor=white&labelColor=111)
@@ -56,6 +57,8 @@
    - express
    - body-parser
    - socket.io
+   - jasmine
+   - request
 
    File .env configuration
 
