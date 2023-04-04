@@ -11,6 +11,8 @@ app.use(express.static(__dirname))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
+mongoose.Promise = Promise
+
 var dbUrl = process.env.MONGO_URL;
 
 var Message = mongoose.model('Message', {
@@ -41,11 +43,11 @@ app.post('/messages', async (req, res) => {
                         .then(() => {
                             console.log('Deleted censored message');
                         })
+                } else {
+                    io.emit('message', savedMessage);
+                    res.status(201).json(savedMessage);
                 }
             })
-
-        io.emit('message', savedMessage);
-        res.status(201).json(savedMessage);
     } catch (error) {
         res.send(error.message);
     }
