@@ -33,6 +33,17 @@ app.post('/messages', async (req, res) => {
 
         const savedMessage = await message.save();
 
+        Message.findOne({ message: 'badword' })
+            .then((censored) => {
+                if (censored) {
+                    console.log('Censored words found', censored);
+                    Message.deleteOne({ _id: censored.id })
+                        .then(() => {
+                            console.log('Deleted censored message');
+                        })
+                }
+            })
+
         io.emit('message', savedMessage);
         res.status(201).json(savedMessage);
     } catch (error) {
