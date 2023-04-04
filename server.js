@@ -13,19 +13,31 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 var dbUrl = process.env.MONGO_URL;
 
-var messages = [
-    { name: 'Paul', message: 'Hi' },
-    { name: 'John', message: 'Hello' }
-];
-
-app.get('/messages', (req, res) => {
-    res.send(messages);
+var Message = mongoose.model('Message', {
+    name: String,
+    message: String
 })
 
-app.post('/messages', (req, res) => {
-    messages.push(req.body);
-    io.emit('message', req.body);
-    res.sendStatus(200);
+app.get('/messages', async (req, res) => {
+    try {
+        const messages = await Message.find({});
+        res.status(200).json(messages);
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
+app.post('/messages', async (req, res) => {
+    try {
+        var message = new Message(req.body);
+
+        const savedMessage = await message.save();
+
+        io.emit('message', savedMessage);
+        res.status(201).json(savedMessage);
+    } catch (error) {
+        res.send(error.message);
+    }
 })
 
 io.on('connection', (socket) => {
